@@ -1,0 +1,70 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fcf7219bab7fe46a1ad266029b2fee19, type: 3}
+  m_Name: Readme
+  m_EditorClassIdentifier: 
+  icon: {fileID: 2800000, guid: 453c96b0026fda24aab7856969f39196, type: 3}
+  title: Deep Space Template
+  sections:
+  - heading: Quick Start
+    text: In the “Game” tab, add a resolution for the Deep Space (3840x4320). In Project Settings > Player > Resolution and Presentation, make sure “Run in Background” is checked. Choose the starter scene that matches your project idea, save it under a new name and start from there.
+    linkText: 
+    url: 
+  - heading: About This Project
+    text: This Unity project was created by Tiago Martins, with reference to an example kindly provided by Axel Bräuer. OSC code is heavily based on UnityOSC by Thomas Fredericks. Feel free to modify and use. If you use it for commercial purposes, please be so kind to credit us and also let us know if possible.
+    linkText: UnityOSC on Github
+    url: https://thomasfredericks.github.io/UnityOSC/
+  - heading: 
+    text: The project was created in Unity 2022.3 starting from the URP template. It should be easy enough to recreate the project for earlier versions of the editor. The code should be version-independent, in principle. Assets include materials and textures from the free Gridbox Prototype Materials package by Cyathiza.
+    linkText: Gridbox Prototype Materials
+    url: https://assetstore.unity.com/packages/2d/textures-materials/gridbox-prototype-materials-129127
+  - heading: Setting up for Deep Space
+    text: The first thing you may want to do is to create one or more resolution modes for Deep Space in the Game tab. I suggest creating a “Deep Space Full-res” setting with a “fixed resolution” of 3840x4320; and a “Deep Space Scaled” setting with an “aspect ratio” of 16:18. Having a scaled resolution can be better for testing on less powerful computers, since Unity won’t be rendering at a full 3840x4320. Feel free to add other resolutions as you like. For instance, if you want to work only with the wall, than having a “Deep Space Wall” setting with resolution of 3840x2160 or aspect of 16:9 would make sense.
+    linkText: 
+    url: 
+  - heading: 
+    text: Another thing you may want to do, especially for testing cursor tracking (with a TUIO simulator), is to ensure that Unity scripts keep running even when the Editor window is not focused. In Project Settings > Player > Resolution and Presentation, make sure that “Run in Background” is checked. Otherwise, if you go into play mode in Unity and then go and click on the TUIO Simulator’s window, the Unity Editor loses focus and stops updating scripts, and your TUIO cursor messages will not be received. They will later be received (all at once) when you click back on the Editor window.
+    linkText: 
+    url: 
+  - heading: Setting up the Cursor Components
+    text: Create an empty Game Object in your scene, name it “Cursor Manager” and add the Tuio Cursor Manager script to it. There should be only one such component in the scene. Make sure the Tuio Cursor Manager’s port is set to 3333 (the default port for TUIO), and “Open On Start” is checked (so that the manger begins listening for messages when you enter Play mode). You can also check “Debug Messages” for initial testing - you could already enter Play mode, and try out the TUIO simulator, while keeping an eye on the Console to make sure that cursor data is coming in.
+    linkText: 
+    url: 
+  - heading: 
+    text: The Tuio Cursor Manager will receive and handle TUIO 2D-cursor messages, to keep track of cursors and call events when cursors are added, updated or removed. The Tuio Cursor Manager won’t create anything in the scene by itself. You could write your own script that subscribes to the Tuio Cursor Manager events, creating and manipulating Game Objects in the scene as intended. A Deep Space Cursor Manager script is provided, which does just that and should suit most purposes. If you ever need to write your own specific behaviour, feel free to take a look inside the script and/or use it as a starting point.
+    linkText: 
+    url: 
+  - heading: 
+    text: We will start with displaying cursors on the wall cursors as the base example. Create an empty Game Object named “Wall Cursors”. This object’s position should be aligned with the camera. Typically your camera is looking forward in the Z axis, so your “Wall Cursors” object should be on the same line along the Z axis, in front of the camera. Make sure that the “Wall Cursors” object is not rotated or scaled. Add a Deep Space Cursor Manager script to the object.
+    linkText: 
+    url: 
+  - heading: 
+    text: Create an empty Game Object in the scene and name it “My Cursor”. Make sure that the object’s transform is reset (all 0’s in position and rotation, all 1’s in scale). As a child of this object, create a Unity 3D primitive such as a sphere or cube; or add another visual of your choice, such as a 3D model. Depending on the distance from your “Wall Cursors” object to the camera, you may want to make your cursor’s visuals larger (if it is very far) or smaller (if it is very close). To the “My Cursor” object, add the Deep Space Cursor script. For now, make sure “Destroy When Removed” is checked. This will cause the cursor to disappear (self-destruct) as soon as it is removed by the Deep Space Cursor Manager. Later on you may want to animate the cursor’s visuals in some way, instead of having it immediately disappear, but for now we want to be sure that things are working properly, and cursors aren’t left hanging in the scene like zombies. Now create a prefab based on “My Cursor” by dragging the Game Object from the Hierarchy tab into the project tab, ideally to a “Prefabs” folder. You can now delete the original “My Cursor” from the scene Hierarchy.
+    linkText: 
+    url: 
+  - heading: 
+    text: Back to the Deep Space Cursor Manager, assign the cursor prefab you just created to “Cursor Prefab”. When a TUIO cursor is added, the manager will create a Game Object in the scene based on this prefab; and when the TUIO cursor’s position is updated, the manager will update the object’s position in the scene. You could already press play and give it a try - hopefully you can see that cursors are being created, moved and removed when you use the TUIO simulator.
+    linkText: 
+    url: 
+  - heading: 
+    text: In the Deep Space Cursor Manager, choose a range for X and Y positions. In principle this should be a positive number. The manager script will set the X and Y position of cursors relative to the parent - in this case the “Wall Cursors” object. The manager script won’t change the object’s relative Z position.
+    linkText: 
+    url: 
+  - heading: 
+    text: The position range is meant to represent the total distance in scene/world units within which the object should move. For a TUIO position of (0.5, 0.5), i.e. the center, the cursor Game Object will have a relative X and Y of (0, 0), aligning with the parent. For TUIO positions on either end (0.0 or 1.0) the cursor Game Object will have a relative X or Y with half the range. E.g. for a range of 10 units, the TUIO position values 0.0, 0.5 and 1.0 map to local position values of -5, 0, and 5 respectively.
+    linkText: 
+    url: 
+  - heading: 
+    text: Your cursors will always move in an XY plane relative to their parent transform. So if you wanted to make floor cursors, or cursors that move in the XZ (horizontal) plane, you could simply rotate the parent transform 90 degrees in the X axis. The parent transform can be assigned in the Deep Space Cursor Manager as you wish, and does not have to be the same Game Object that the Deep Space Cursor Manager script is on. Ideally, make sure that neither the cursors’ parent or its progenitors/ancestors are scaled. You can have multiple Deep Space Cursor Managers if you need, each with different position ranges, cursor parents and cursor prefabs. For instance, if you wanted to have cursors on the wall and floor, you will likely have two Deep Space Cursor Managers. If your floor area is not a 3D scene but rather a UI canvas, you will have a different prefab for the floor cursors, typically using a UI image. Check the example scenes to see how the managers, parent transforms and prefabs are set up in each case.
+    linkText: 
+    url: 
+  loadedLayout: 1
