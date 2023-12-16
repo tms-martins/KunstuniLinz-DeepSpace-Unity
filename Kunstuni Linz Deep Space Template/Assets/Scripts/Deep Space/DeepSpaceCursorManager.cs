@@ -13,17 +13,37 @@ namespace KunstuniLinz.DeepSpace
     {
         [Tooltip("The TuioCursorManager which we will receive events from. When unassigned, the script will try to find one in the scene.")]
         [SerializeField] protected TuioCursorManager tuioCursorManager = null;
-        [Tooltip("The conversion range from TUIO position values to local position values in the X axis. A range of 10 would map TUIO's range [0.0, 1.0] to a local position range [-5.0, 5.0]")]
-        [SerializeField] protected float posXRange = 10f;
-        [Tooltip("The conversion range from TUIO position values to local position values in the Y axis. For the Y axis, the value is inverted. A range of 10 would map TUIO's range [0.0, 1.0] to a local position range [5.0, -5.0]")]
-        [SerializeField] protected float posYRange = 10f;
         [Tooltip("The prefab to be instantiated for each cursor. Must have a DeepSpaceCursor script component")]
         [SerializeField] protected DeepSpaceCursor cursorPrefab = null;
-        [Tooltip("The parent trasform for cursors. When unassigned, will use this object's transform. Translate and rotate the parent transform to control the cursors' base position and direction of movement (e.g. \"wall\" or \"floor\" behaviour")]
+        [Tooltip("The parent trasform for cursors. When unassigned, will use this object's transform. If this object is a UI element, the cursors' position will be set in relation to its dimensions. Otherwise, translate and rotate the parent transform to control the cursors' base position and direction of movement (e.g. \"wall\" or \"floor\" behaviour")]
         [SerializeField] protected Transform cursorsParentTransform = null;
+        [Tooltip("For world-space (non-UI) cursors, the conversion range from TUIO position values (0.0/1.0) to local position values (min/max).")]
+        [SerializeField] protected WorldSpaceCursorPositionRange worldSpaceCursorPositionRange = new WorldSpaceCursorPositionRange(-10f, 10f, -10f, 10f);
+        [Tooltip("Should the Y coordinates be inverted.")]
+        [SerializeField] protected bool invertY = true;
+
+        [System.Serializable]
+        public struct WorldSpaceCursorPositionRange
+        {
+            public float xMin;
+            public float xMax;
+            public float yMin;
+            public float yMax;
+
+            public WorldSpaceCursorPositionRange(float xMin, float xMax, float yMin, float yMax)
+            {
+                this.xMin = xMin;
+                this.xMax = xMax;
+                this.yMin = yMin;
+                this.yMax = yMax;
+            }
+        }
 
         // The Dictionary of instantiated cursor objects, indexed by TUIO id.
         Dictionary<int, DeepSpaceCursor> cursors = new Dictionary<int, DeepSpaceCursor>();
+
+        protected bool isCursorsParentUI = false;
+        protected RectTransform parentRectTransform = null;
 
         void OnEnable()
         {
@@ -49,6 +69,12 @@ namespace KunstuniLinz.DeepSpace
             else {
                 Debug.LogError($"{GetType().Name}: could not find a TuioCursorManager in the scene");
                 return;
+            }
+
+            if (cursorsParentTransform.TryGetComponent<RectTransform>(out parentRectTransform))
+            {
+                Debug.Log($"{GetType().Name} on {gameObject.name}: the cursor parent transform {cursorsParentTransform.name} seems to be a UI element. We shall use UI-space coordinate conversions for the cursors in this case.");
+                isCursorsParentUI = true;
             }
             
         }
@@ -117,17 +143,31 @@ namespace KunstuniLinz.DeepSpace
 
         protected void UpdateCursorObjectPosition(DeepSpaceCursor cursor)
         {
-            // Sets the cursor object's local position (i.e. in relation to its parent transform)
-            // based on a specified conversion range for each axis.
-            // TUIO position values come in a range of [0.0, 1.0], which we  mapped to a range of
-            // [-posXRange/2, posXRange/2] and [posYRange/2, -posYRange/2] for X and Y respectively.
-            // The range is reversed for the Y axis, since TUIO's origin seems to be on the top left (screen space),
-            // whereas Unity scenes are based on a cartesian coordinate system.
+            float cursorX = cursor.X;
+            float cursorY = invertY ? (1f - cursor.Y) : cursor.Y;
 
-            cursor.transform.localPosition = new Vector3(
-                (cursor.X * posXRange) - (posXRange / 2f),
-                (cursor.Y * -posYRange) + (posYRange / 2f),
-                cursor.transform.localPosition.z);
+            if (isCursorsParentUI)
+            {
+                // The cursors within a UI element, so we use that element's size and pivot to position them within.
+                // As a result, the cursor's position will remain consistent as the UI scales.
+
+                cursor.transform.localPosition = new Vector3(
+                    ((cursorX - parentRectTransform.pivot.x) * parentRectTransform.rect.width),
+                    ((cursorY - parentRectTransform.pivot.y) * parentRectTransform.rect.height),
+                    cursor.transform.localPosition.z);
+            }
+            else
+            {
+                // Sets the cursor object's local position (i.e. in relation to its parent transform)
+                // based on a specified conversion range for each axis.
+                // TUIO position values come in a range of [0.0, 1.0], which we  mapped to a range of
+                // [xMin, xMax] and [yMin, yMax] for X and Y respectively.
+
+                cursor.transform.localPosition = new Vector3(
+                    worldSpaceCursorPositionRange.xMin + (cursorX * (worldSpaceCursorPositionRange.xMax - worldSpaceCursorPositionRange.xMin)),
+                    (worldSpaceCursorPositionRange.yMin + (cursorY * (worldSpaceCursorPositionRange.yMax - worldSpaceCursorPositionRange.yMin))),
+                    cursor.transform.localPosition.z);
+            }
         }
     }
 }

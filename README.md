@@ -1,3 +1,4 @@
+
 # KunstuniLinz-DeepSpace-Unity
 # Deep Space Template - Kunstuni Linz
 
@@ -5,21 +6,40 @@ A base/template Unity project as starting point for creating interactive content
 
 ## Quick Start
 
-In the "Game" tab, add a resolution for the Deep Space (3840x4320). In Project Settings > Player > Resolution and Presentation, make sure "Run in Background" is checked. Choose the starter scene that matches your project idea, save it under a new name and start from there.
+- Make a copy of the starter scene "Starter - Deep Space - Wall, Floor and UI (dual displays)" and start from there.
+- Typically, the DeepSpace is configured as two separate displays, so each Camera in the scene is set to render to a different display. To preview both the wall and the floor, you may want to have two Game tabs, one set to "Display 1" and the other to "Display 2" and stack them vertically. Each Game tab should be set to an aspect of 16:9, or a fixed resolution of 3840x2160 (DeepSpace single display); or 1920x1080 (half of that) on less powerful computers. 
+- In Project Settings > Player > Resolution and Presentation, make sure "Run in Background" is checked, so that the Editor still runs while you are working on a nother window, e.g. a TUIO simulator.
+- The on-screen Log UI can be toggled with the "L" key.
+- De-activate or delete the Game Objects you won't use. However, even if you only want to work with wall visuals, keeping "Floor UI" and "Floor Camera" can be useful for visual feedback while creating and testing.
+- When you build and run the application, it will look for a settings file in "[Application name]_Data\Settings\DeepSpaceSettings.txt" relative to the executable file. An example settings file is provided for you to use.
 
 ## About This Project
 
-This Unity project was created by Tiago Martins, with reference to an example kindly provided by Axel Bräuer. OSC code is heavily based on [UnityOSC by Thomas Fredericks](https://thomasfredericks.github.io/UnityOSC/). Feel free to modify and use. If you use it for commercial purposes, please be so kind to credit us and also let us know if possible.
+This Unity project was created by Tiago Martins, with reference to an example kindly provided by Axel Bräuer, and a few test runs in the actual space with feedback from Holunder Heiß. OSC code is heavily based on [UnityOSC by Thomas Fredericks](https://thomasfredericks.github.io/UnityOSC/). Feel free to modify and use. If you use it for commercial purposes, please be so kind to credit us, and also let us know if possible.
 
-The project was created in Unity 2022.3 starting from the URP template. It should be easy enough to recreate the project for earlier versions of the editor. The code should be version-independent, in principle. Assets include materials and textures from the free [Gridbox Prototype Materials package by Cyathiza](https://assetstore.unity.com/packages/2d/textures-materials/gridbox-prototype-materials-129127).
+The project was created in Unity 2022.3 starting from the URP template. It should be easy enough to recreate the project for earlier versions of the editor. The code should be version-independent in principle. Assets include materials and textures from the free [Gridbox Prototype Materials package by Cyathiza](https://assetstore.unity.com/packages/2d/textures-materials/gridbox-prototype-materials-129127).
 
-## Setting up for Deep Space
+## Setting up for Deep Space - Dual Displays
 
-The first thing you may want to do is to **create one or more resolution modes for Deep Space in the Game tab**. I suggest creating a "Deep Space Full-res" setting with a "fixed resolution" of 3840x4320; and a "Deep Space Scaled" setting with an "aspect ratio" of 16:18. Having a scaled resolution can be better for testing on less powerful computers, since Unity won't be rendering at a full 3840x4320. Feel free to add other resolutions as you like. For instance, if you want to work only with the wall, than having a "Deep Space Wall" setting with resolution of 3840x2160 or aspect of 16:9 would make sense.
+Typically, the DeepSpace is configured as two separate displays. Assuming you wish to render to both the wall and floor, you will have two cameras in your scene, each set to render to a different display, "Display 1" and "Display 2" respectively. Typically, the Wall Camera comes first and is tagged as "MainCamera", and the Floor Camera next. You can assign a custom tag "FloorCamera" to it.
 
-Another thing you may want to do, especially for testing cursor tracking (with a TUIO simulator), is to **ensure that Unity scripts keep running even when the Editor window is not focused**. In *Project Settings > Player > Resolution and Presentation*, make sure that "Run in Background" is checked. Otherwise, if you go into play mode in Unity and then go and click on the TUIO Simulator's window, the Unity Editor loses focus and stops updating scripts, and your TUIO cursor messages will not be received. They will later be received (all at once) when you click back on the Editor window. 
+To preview your scene, you may want to add a second "Game" tab in the Editor, set it to "Display 2", and stack both Game tabs vertically. Each Game tab should be set to a fixed aspect of 16:9. You can also use a fixed resolution of 3840x2160 (DeepSpace single display); or 1920x1080 (half of that) to save up on rendering power.
+
+When running the app, Unity will not, by default, use additional displays beyond the main diplay (as indicated by the operating system). A script is provided and used in the example scene to do just that. You can also refer to the [Unity documentation on multiple displays](https://docs.unity3d.com/Manual/MultiDisplay.html).
+
+## Setting up for Deep Space - Single Display
+
+The DeepSpace at Kunstuni can also run as a single display with a resolution of 3840x4320, as wall and floor stacked vertically (wall on top, floor on bottom). If you plan on running your project in the Ars Electronica Center's DeepSpace however, **this is not recommended**. An example scene for this configuration is provided.
+
+You should create one or more resolution modes for Deep Space in the Game tab. I suggest creating a "Deep Space Full-res" setting with a "fixed resolution" of 3840x4320; and a "Deep Space Scaled" setting with an "aspect ratio" of 16:18. Having a scaled resolution can be better for testing on less powerful computers, since Unity won't be rendering at a full 3840x4320. 
+
+Both cameras should be set to render on "Display 1", but each will render to a different area of the display (viewport). The "Viewport Rect" (X/Y/W/H) for Wall and Floor cameras should be respectively (0.0, 0.5, 1.0, 0.5) and (0.0, 0.0, 1.0, 0.5).
+
+The Floor UI Canvas can be set to "Scale With Screen Size" with a reference resolution of 3840x4320. To host the UI cursors, you should have a UI Panel taking up the lower half of the canvas (e.g. anchored to the bottom, stretched horizontally, and height set to 2160).
 
 ## Setting up the Cursor Components
+
+If you plan on using the tracking system, the first thing you should do is to **ensure that Unity scripts keep running even when the application window is not focused**. In *Project Settings > Player > Resolution and Presentation*, make sure that "Run in Background" is checked. Otherwise, for instance, if you go into play mode in Unity and then go and click on the TUIO Simulator's window, the Unity Editor loses focus and stops updating scripts, and your TUIO cursor messages will not be received. They will later be received (all at once) when you click back on the Editor window. 
 
 Create an empty Game Object in your scene, name it "Cursor Manager" and add the *Tuio Cursor Manager* script to it. There should be only one such component in the scene. Make sure the *Tuio Cursor Manager*'s port is set to 3333 (the default port for TUIO), and "Open On Start" is checked (so that the manger begins listening for messages when you enter Play mode). You can also check "Debug Messages" for initial testing - you could already enter Play mode, and try out the TUIO simulator, while keeping an eye on the Console to make sure that cursor data is coming in.
 
@@ -31,8 +51,21 @@ Create an empty Game Object in the scene and name it "My Cursor". Make sure that
 
 Back to the *Deep Space Cursor Manager*, assign the cursor prefab you just created to "Cursor Prefab". When a TUIO cursor is added, the manager will create a Game Object in the scene based on this prefab; and when the TUIO cursor's position is updated, the manager will update the object's position in the scene. You could already press play and give it a try - hopefully you can see that cursors are being created, moved and removed when you use the TUIO simulator.
 
-In the Deep Space Cursor Manager, choose a range for X and Y positions. In principle this should be a positive number. The manager script will set the X and Y position of cursors relative to the parent - in this case the "Wall Cursors" object. The manager script won't change the object's relative Z position. 
-
-The position range is meant to represent the total distance in scene/world units within which the object should move. For a TUIO position of (0.5, 0.5), i.e. the center, the cursor Game Object will have a relative X and Y of (0, 0), aligning with the parent. For TUIO positions on either end (0.0 or 1.0) the cursor Game Object will have a relative X or Y with half the range. E.g. for a range of 10 units, the TUIO position values 0.0, 0.5 and 1.0 map to local position values of -5, 0, and 5 respectively.
+In the Deep Space Cursor Manager, choose a range for X and Y positions. The manager script will set the X and Y position of cursors relative to the parent - in this case the "Wall Cursors" object. The manager script won't change the object's relative Z position. 
 
 Your cursors will always move in an XY plane **relative to their parent transform**. So if you wanted to make floor cursors, or cursors that move in the XZ (horizontal) plane, you could simply rotate the parent transform 90 degrees in the X axis. The parent transform can be assigned in the *Deep Space Cursor Manager* as you wish, and does not have to be the same Game Object that the *Deep Space Cursor Manager* script is on. Ideally, make sure that neither the cursors' parent or its progenitors/ancestors are scaled. You can have multiple *Deep Space Cursor Managers* if you need, each with different position ranges, cursor parents and cursor prefabs. For instance, if you wanted to have cursors on the wall and floor, you will likely have two *Deep Space Cursor Managers*. If your floor area is not a 3D scene but rather a UI canvas, you will have a different prefab for the floor cursors, typically using a UI image. Check the example scenes to see how the managers, parent transforms and prefabs are set up in each case.
+
+## Configuration File
+
+If you wish to load a configuration file when a scene starts, add a Deep Space Settings Loader to the top of the Hierarchy. This is already the case in the Starter scenes. Make sure you assign all the component fields properly, check the Starter scenes for reference. 
+
+At runtime, the settings are held by a Deep Space Settings asset (scriptable object). You can create one in the the Project tab with Create > Deep Space > Deep Space Settings. While working in the Editor, the Settings Loader will not load settings from a file, but rather use whatever is in the Settings object that you assigned to it. When running a built application, it will look for the file "[Application name]_Data\Settings\DeepSpaceSettings.txt" relative to the location of the executable.
+
+Basic settings for a built app running on the DeepSpace can be kept in a JSON-formatted configuration file named "DeepSpaceSettings.txt". A sample is provided in the project, and also below. Fields and values should be mostly self-explanatory.
+
+    {
+      "showDebugUi": 1,
+      "wallCameraDisplayIndex": 0,
+      "floorCameraDisplayIndex": 1,
+      "tuioPort": 3333
+    }

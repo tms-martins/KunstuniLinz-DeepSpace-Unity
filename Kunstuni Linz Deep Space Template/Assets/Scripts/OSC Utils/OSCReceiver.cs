@@ -256,7 +256,7 @@ namespace OSCUtils
         {
 #if !UNITY_EDITOR
 		paused = pauseStatus;
-		Debug.LogError($"{GetType().Name}.OnApplicationPause(): paused {pauseStatus}");
+		Debug.Log($"{GetType().Name}.OnApplicationPause(): paused is {pauseStatus}");
 #endif
         }
 
