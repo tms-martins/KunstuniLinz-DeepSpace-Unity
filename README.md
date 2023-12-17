@@ -1,14 +1,6 @@
 # KunstuniLinz-DeepSpace-Unity
 A base/template Unity project as starting point for creating interactive content for the Kunstuni Linz Deep Space, including TUIO protocol cursor tracking.
 
-# Table of Contents
-1. [Quick Start](# Quick Start)
-2. [About This Project](# About This Project)
-3. [Setting up for Deep Space - Dual Displays](# Setting up for Deep Space - Dual Displays)
-4. [Setting up for Deep Space - Single Display](# Setting up for Deep Space - Single Display)
-5. [Configuration File](# Configuration File)
-6. [Setting up the Cursor Components](# Setting up the Cursor Components)
-
 # Quick Start
 - Make a copy of the scene "Starter - Deep Space - Wall, Floor and UI (dual displays)" and start from there.
 - Typically, the DeepSpace is configured as two separate displays, so each Camera in the scene is set to render to a different display. To preview both the wall and the floor, you may want to have two Game tabs, one set to "Display 1" and the other to "Display 2" and stack them vertically. Each Game tab should be set to an aspect of 16:9, or a fixed resolution of 4K 3840x2160 (DeepSpace single display); or 1920x1080 (half of that) on less powerful computers. 
