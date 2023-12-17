@@ -1,0 +1,6 @@
+{
+  "showDebugUi": 0,
+  "wallCameraDisplayIndex": 0,
+  "floorCameraDisplayIndex": 1,
+  "tuioPort": 3333
+}

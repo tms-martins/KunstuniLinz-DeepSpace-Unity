@@ -1,0 +1,93 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fcf7219bab7fe46a1ad266029b2fee19, type: 3}
+  m_Name: Readme
+  m_EditorClassIdentifier: 
+  icon: {fileID: 2800000, guid: 453c96b0026fda24aab7856969f39196, type: 3}
+  title: Deep Space Template
+  sections:
+  - heading: 
+    text: A base/template Unity project as starting point for creating interactive
+      content for the Kunstuni Linz Deep Space, including TUIO protocol cursor tracking.
+    linkText: 'See more on GitHub: KunstuniLinz-DeepSpace-Unity'
+    url: https://github.com/tms-martins/KunstuniLinz-DeepSpace-Unity
+  - heading: Quick Start
+    text: 
+    linkText: 
+    url: 
+  - heading: 
+    text: 1) Make a copy of the scene "Starter - Deep Space - Wall, Floor and UI
+      (dual displays)" and start from there.
+    linkText: 
+    url: 
+  - heading: 
+    text: 2) Typically, the DeepSpace is configured as two separate displays, so
+      each Camera in the scene is set to render to a different display. To preview
+      both the wall and the floor, you may want to have two Game tabs, one set to
+      "Display 1" and the other to "Display 2" and stack them vertically. Each Game
+      tab should be set to an aspect of 16:9, or a fixed resolution of 4K 3840x2160
+      (DeepSpace single display); or 1920x1080 (half of that) on less powerful computers.
+    linkText: 
+    url: 
+  - heading: 
+    text: '3) In Project Settings > Player > Resolution and Presentation, make sure
+      "Run in Background" is checked, so that the Editor still runs while you are
+      working on a nother window, e.g. a TUIO simulator. - The on-screen Log UI can
+      be toggled with the "L" key. '
+    linkText: 
+    url: 
+  - heading: 
+    text: 4) The on-screen Log UI can be toggled with the "L" key.
+    linkText: 
+    url: 
+  - heading: 
+    text: '5) De-activate or delete the Game Objects you won''t use. However, even
+      if you only want to work with wall visuals, keeping "Floor UI" and "Floor Camera"
+      can be useful for visual feedback while creating and testing. '
+    linkText: 
+    url: 
+  - heading: 
+    text: 6) What your cursors look like and what they do depends on the prefab assigned
+      in each Deep Space Cursor Manager in the scene. The cursors move in X and Y
+      in relation to their parent Transform, as set in each Deep Space Cursor Manager.
+    linkText: 
+    url: 
+  - heading: 
+    text: '7) When running in the Editor, a Deep Space Settings Loader component
+      loads settings from an asset assigned to it. '
+    linkText: 
+    url: 
+  - heading: 
+    text: 8) When you build and run the application, the Deep Space Settings Loader
+      will instead look for a settings file in "[Application name]_Data\Settings\DeepSpaceSettings.txt"
+      relative to the executable file. An example settings file is provided for you
+      to use.
+    linkText: 
+    url: 
+  - heading: About This Project
+    text: "This Unity project was created by Tiago Martins, with reference to an
+      example kindly provided by Axel Br\xE4uer, and a few test runs in the actual
+      space with feedback from Holunder Hei\xDF. OSC code is heavily based on UnityOSC
+      by Thomas Fredericks (link below)."
+    linkText: UnityOSC on Github
+    url: https://thomasfredericks.github.io/UnityOSC/
+  - heading: 
+    text: The project was created in Unity 2021.3 starting from the base 3D template,
+      and then adding the URP. It should be possible to open the project with later
+      versions of the Editor; and it should be straightforward enough to recreate
+      the project for earlier versions of the editor, or to use the built-in renderer
+      or HDRP. The code should be version-independent in principle. Assets include
+      materials and textures from the free Gridbox Prototype Materials package by
+      Cyathiza (link below).
+    linkText: Gridbox Prototype Materials
+    url: https://assetstore.unity.com/packages/2d/textures-materials/gridbox-prototype-materials-129127
+  loadedLayout: 1
