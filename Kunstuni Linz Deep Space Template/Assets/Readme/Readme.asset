@@ -25,17 +25,17 @@ MonoBehaviour:
     linkText: 
     url: 
   - heading: 
-    text: '1) Make a copy of the starter scene "Starter - Deep Space - Wall, Floor
-      and UI (dual displays)" and start from there. '
+    text: 1) Make a copy of the scene "Starter - Deep Space - Wall, Floor and UI
+      (dual displays)" and start from there.
     linkText: 
     url: 
   - heading: 
-    text: '2) Typically, the DeepSpace is configured as two separate displays, so
+    text: 2) Typically, the DeepSpace is configured as two separate displays, so
       each Camera in the scene is set to render to a different display. To preview
       both the wall and the floor, you may want to have two Game tabs, one set to
       "Display 1" and the other to "Display 2" and stack them vertically. Each Game
-      tab should be set to an aspect of 16:9, or a fixed resolution of 3840x2160
-      (DeepSpace single display); or 1920x1080 (half of that) on less powerful computers.  '
+      tab should be set to an aspect of 16:9, or a fixed resolution of 4K 3840x2160
+      (DeepSpace single display); or 1920x1080 (half of that) on less powerful computers.
     linkText: 
     url: 
   - heading: 
@@ -46,29 +46,46 @@ MonoBehaviour:
     linkText: 
     url: 
   - heading: 
-    text: '4) De-activate or delete the Game Objects you won''t use. However, even
+    text: 4) The on-screen Log UI can be toggled with the "L" key.
+    linkText: 
+    url: 
+  - heading: 
+    text: '5) De-activate or delete the Game Objects you won''t use. However, even
       if you only want to work with wall visuals, keeping "Floor UI" and "Floor Camera"
       can be useful for visual feedback while creating and testing. '
     linkText: 
     url: 
   - heading: 
-    text: '5) When you build and run the application, it will look for a settings
-      file in "[Application name]_Data\Settings\DeepSpaceSettings.txt" relative to
-      the executable file. An example settings file is provided for you to use. '
+    text: 6) What your cursors look like and what they do depends on the prefab assigned
+      in each Deep Space Cursor Manager in the scene. The cursors move in X and Y
+      in relation to their parent Transform, as set in each Deep Space Cursor Manager.
+    linkText: 
+    url: 
+  - heading: 
+    text: '7) When running in the Editor, a Deep Space Settings Loader component
+      loads settings from an asset assigned to it. '
+    linkText: 
+    url: 
+  - heading: 
+    text: 8) When you build and run the application, the Deep Space Settings Loader
+      will instead look for a settings file in "[Application name]_Data\Settings\DeepSpaceSettings.txt"
+      relative to the executable file. An example settings file is provided for you
+      to use.
     linkText: 
     url: 
   - heading: About This Project
     text: "This Unity project was created by Tiago Martins, with reference to an
       example kindly provided by Axel Br\xE4uer, and a few test runs in the actual
       space with feedback from Holunder Hei\xDF. OSC code is heavily based on UnityOSC
-      by Thomas Fredericks. Feel free to modify and use. If you use it for commercial
-      purposes, please be so kind to credit us and also let us know if possible."
+      by Thomas Fredericks (link below)."
     linkText: UnityOSC on Github
     url: https://thomasfredericks.github.io/UnityOSC/
   - heading: 
-    text: The project was created in Unity 2022.3 starting from the URP template.
-      It should be easy enough to recreate the project for earlier versions of the
-      editor. The code should be version-independent in principle. Assets include
+    text: The project was created in Unity 2021.3 starting from the base 3D template,
+      and then adding the URP. It should be possible to open the project with later
+      versions of the Editor; and it should be straightforward enough to recreate
+      the project for earlier versions of the editor, or to use the built-in renderer
+      or HDRP. The code should be version-independent in principle. Assets include
       materials and textures from the free Gridbox Prototype Materials package by
       Cyathiza (link below).
     linkText: Gridbox Prototype Materials

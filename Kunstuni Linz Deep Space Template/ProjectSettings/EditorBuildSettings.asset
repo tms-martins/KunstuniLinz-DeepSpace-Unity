@@ -6,7 +6,7 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Test Assets/Scenes/Starter - Deep Space - Wall, Floor and UI (dual
-      displays).unity
+    path: Assets/Deep Space Test Assets/Scenes/Starter - Deep Space - Wall, Floor
+      and UI (dual displays).unity
     guid: 27592d5c7429e054c8e0451c4437dd8a
   m_configObjects: {}
